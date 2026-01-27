@@ -14,9 +14,9 @@ function Prometheus() {
 }
 
 Prometheus.prototype.createMetric = function (param, type) {
-  var key = param.key;
+  const key = param.key;
 
-  var metric = {
+  const metric = {
     key: param.key,
     value: param.value || 0,
     help: param.help || '',
@@ -49,11 +49,11 @@ Prometheus.prototype.createMetric = function (param, type) {
     },
 
     compile: function () {
-      var metricKey = this.key;
+      let metricKey = this.key;
 
       if (this.metadata && Object.keys(this.metadata).length > 0) {
-        var metaParts = [];
-        for (var k in this.metadata) {
+        const metaParts = [];
+        for (let k in this.metadata) {
           if (this.metadata.hasOwnProperty(k)) {
             metaParts.push(k + '=' + formatType(this.metadata[k]));
           }
@@ -61,7 +61,7 @@ Prometheus.prototype.createMetric = function (param, type) {
         metricKey = metricKey + '{' + metaParts.join(',') + '}';
       }
 
-      var lines = [];
+      const lines = [];
       if (this.help) {
         lines.push('# HELP ' + this.key + ' ' + this.help);
       }
@@ -93,8 +93,8 @@ Prometheus.prototype.summary = function (param) {
 };
 
 function compile() {
-  var result = [];
-  for (var i = 0; i < arguments.length; i++) {
+  const result = [];
+  for (let i = 0; i < arguments.length; i++) {
     result.push(arguments[i].compile());
   }
   return result.join('\n\n') + '\n';
