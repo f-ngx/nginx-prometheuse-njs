@@ -6,11 +6,9 @@
 
 ## Описание
 
-Проект предоставляет endpoint `/v1/metrics` с метриками Nginx в формате Prometheus.
-
-Метрики собираются из встроенного модуля `stub_status` через njs скрипты.
-
-Файл дашборда для Grafana - dashboars.json
+  * Проект предоставляет endpoint `/v1/metrics` с метриками Nginx в формате Prometheus.
+  * Метрики собираются из встроенного модуля `stub_status` через njs скрипты.
+  * Файл дашборда для Grafana - `dashboars.json`
 
 ## Метрики
 
@@ -34,7 +32,7 @@
 
 ## Требования
 
-- Или Nginx с модулем `ngx_http_js_module` и `ngx_http_stub_status_module` (для установки без Docker)
+- Nginx с модулем `ngx_http_js_module` и `ngx_http_stub_status_module` (для установки без Docker)
 
 ## Быстрый старт
 
@@ -84,18 +82,6 @@ curl http://localhost:8000/v1/stub_status
 - `r.variables.hostname`
 - `r.variables.host`
 - Или `'unknown'` если переменные не установлены
-
-## Использование с Prometheus
-
-Добавьте в `prometheus.yml`:
-
-```yaml
-scrape_configs:
-  - job_name: 'nginx'
-    static_configs:
-      - targets: ['localhost:8000']
-    metrics_path: '/v1/metrics'
-```
 
 ## Пример вывода метрик
 
