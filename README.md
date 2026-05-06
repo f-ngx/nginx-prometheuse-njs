@@ -8,7 +8,7 @@
 
   * Проект предоставляет endpoint `/v1/metrics` с метриками Nginx в формате Prometheus.
   * Метрики собираются из встроенного модуля `stub_status` через njs скрипты.
-  * Файл дашборда для Grafana - `dashboars.json`
+  * Файл дашборда для Grafana - `dashboard.json`
 
 ## Метрики
 
@@ -32,20 +32,20 @@
 
 ## Требования
 
-- Nginx с модулем `ngx_http_js_module` и `ngx_http_stub_status_module` (для установки без Docker)
+- Nginx с модулем `ngx_http_js_module` и `ngx_http_stub_status_module`
 
 ## Быстрый старт
 
 ### Сборка Docker образа
 
 ```bash
-docker build -t nginx-prometheus-metrics .
+bash bin/build
 ```
 
 ### Запуск контейнера
 
 ```bash
-docker run --rm --name nginx-metrics-test -p 8000:80 nginx-prometheus-metrics
+bash bin/start
 ```
 
 ### Проверка работы
@@ -113,10 +113,6 @@ nginx_connections_handled_total{instance="localhost"} 12345
 # HELP nginx_requests_total Total number of client requests
 # TYPE nginx_requests_total counter
 nginx_requests_total{instance="localhost"} 67890
-
-# HELP nginx_connections_dropped_total Total number of dropped connections (accepted - handled)
-# TYPE nginx_connections_dropped_total counter
-nginx_connections_dropped_total{instance="localhost"} 0
 ```
 
 ## Лицензия

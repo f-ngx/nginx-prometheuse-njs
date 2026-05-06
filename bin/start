@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+docker run --rm \
+  --name nginx-metrics-test \
+  -p 8000:80 \
+  nginx-prometheus-metrics

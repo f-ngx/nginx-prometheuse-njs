@@ -41,12 +41,6 @@ const nginx_requests_total = metrics.counter({
   help: 'Total number of client requests'
 });
 
-// Дополнительная метрика - утечка соединений (опционально)
-const nginx_connections_dropped_total = metrics.counter({
-  key: 'nginx_connections_dropped_total',
-  help: 'Total number of dropped connections (accepted - handled)'
-});
-
 // Функция парсинга stub_status
 function parseStubStatus(text) {
   if (!text || typeof text !== 'string') {
@@ -157,13 +151,6 @@ async function collect(r) {
       .set(stats.requests || 0)
       .setMetaData({ instance: hostname });
 
-    // Вычисление dropped connections
-    // accepted всегда >= handled, но на всякий случай...
-    const dropped = Math.max(0, (stats.accepted || 0) - (stats.handled || 0));
-    nginx_connections_dropped_total
-      .set(dropped)
-      .setMetaData({ instance: hostname });
-
     // Сборка метрик
     r.headersOut['Content-Type'] = 'text/plain; version=0.0.4; charset=utf-8';
     r.return(200, prometheus.compile(
@@ -173,8 +160,7 @@ async function collect(r) {
       nginx_connections_waiting,
       nginx_connections_accepted_total,
       nginx_connections_handled_total,
-      nginx_requests_total,
-      nginx_connections_dropped_total
+      nginx_requests_total
     ));
 
   } catch (e) {
