@@ -1,108 +1,71 @@
 /**
- * Модуль для формирования метрик Prometheus (njs)
+ * Минимальный формат экспозиции Prometheus для njs.
+ *
+ * Ограничения:
+ *   - один сэмпл на метрику: значение и набор меток задаются через set();
+ *   - состояние не накапливается между запросами: njs создаёт новую копию VM
+ *     на каждый запрос, поэтому значения всегда берутся из источника целиком
+ *     (stub_status) и выставляются через set(). Методов inc/dec нет намеренно.
  */
 
-function formatType(value) {
-  if (typeof value === 'string') {
-    return '"' + value + '"';
-  }
-  return String(value);
+// Экранирование значения метки по формату экспозиции
+function escapeLabelValue(value) {
+  return String(value)
+    .replace(/\\/g, '\\\\')
+    .replace(/"/g, '\\"')
+    .replace(/\n/g, '\\n');
 }
 
-function Prometheus() {
-  this.metrics = {};
+// Экранирование текста HELP
+function escapeHelp(text) {
+  return String(text)
+    .replace(/\\/g, '\\\\')
+    .replace(/\n/g, '\\n');
 }
 
-Prometheus.prototype.createMetric = function (param, type) {
-  const key = param.key;
-
-  const metric = {
-    key: param.key,
-    value: param.value || 0,
-    help: param.help || '',
+function createMetric(type, name, help) {
+  return {
+    name: name,
     type: type,
-    metadata: param.metadata || {},
+    help: help || '',
+    value: 0,
+    labels: {},
 
-    set: function (value) {
+    // Выставить значение и, при необходимости, метки
+    set: function (value, labels) {
       this.value = value;
+      if (labels) {
+        this.labels = labels;
+      }
       return this;
     },
 
-    inc: function (value) {
-      this.value += (value !== undefined ? value : 1);
-      return this;
-    },
-
-    dec: function (value) {
-      this.value -= (value !== undefined ? value : 1);
-      return this;
-    },
-
-    setMetaData: function (metadata) {
-      this.metadata = metadata;
-      return this;
-    },
-
-    addMetaData: function (key, value) {
-      this.metadata[key] = value;
-      return this;
-    },
-
+    // Текст одной метрики: HELP, TYPE и сэмпл
     compile: function () {
-      let metricKey = this.key;
+      const keys = Object.keys(this.labels);
+      let sample = this.name;
 
-      if (this.metadata && Object.keys(this.metadata).length > 0) {
-        const metaParts = [];
-        for (let k in this.metadata) {
-          if (this.metadata.hasOwnProperty(k)) {
-            metaParts.push(k + '=' + formatType(this.metadata[k]));
-          }
-        }
-        metricKey = metricKey + '{' + metaParts.join(',') + '}';
+      if (keys.length > 0) {
+        const parts = keys.map((k) => k + '="' + escapeLabelValue(this.labels[k]) + '"');
+        sample += '{' + parts.join(',') + '}';
       }
 
       const lines = [];
       if (this.help) {
-        lines.push('# HELP ' + this.key + ' ' + this.help);
+        lines.push('# HELP ' + this.name + ' ' + escapeHelp(this.help));
       }
-      lines.push('# TYPE ' + this.key + ' ' + this.type);
-      lines.push(metricKey + ' ' + String(this.value));
+      lines.push('# TYPE ' + this.name + ' ' + this.type);
+      lines.push(sample + ' ' + String(this.value));
 
-      return lines.join('\n');
+      return lines.join('\n') + '\n';
     }
   };
-
-  this.metrics[key] = metric;
-  return metric;
-};
-
-Prometheus.prototype.gauge = function (param) {
-  return this.createMetric(param, 'gauge');
-};
-
-Prometheus.prototype.counter = function (param) {
-  return this.createMetric(param, 'counter');
-};
-
-Prometheus.prototype.histogram = function (param) {
-  return this.createMetric(param, 'histogram');
-};
-
-Prometheus.prototype.summary = function (param) {
-  return this.createMetric(param, 'summary');
-};
-
-function compile() {
-  const result = [];
-  for (let i = 0; i < arguments.length; i++) {
-    result.push(arguments[i].compile());
-  }
-  return result.join('\n\n') + '\n';
 }
 
 export default {
-  new: function () {
-    return new Prometheus();
-  },
-  compile: compile
+  gauge: (name, help) => createMetric('gauge', name, help),
+  counter: (name, help) => createMetric('counter', name, help),
+
+  // Текст всех метрик, семейства разделены пустой строкой
+  compile: (...metrics) => metrics.map((m) => m.compile()).join('\n')
 };

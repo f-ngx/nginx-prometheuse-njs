@@ -2,5 +2,5 @@
 
 docker run --rm \
   --name nginx-metrics-test \
-  -p 8000:80 \
+  -p 127.0.0.1:8000:80 \
   nginx-prometheus-metrics
