@@ -1,5 +1,4 @@
-.git
-.gitignore
-README.md
-dashboars.json
-*.md
+# В контекст сборки попадают только конфиг и скрипты
+*
+!nginx/
+!src/

@@ -1,47 +1,64 @@
 /**
- * Метрики Prometheus для Nginx со stub_status
+ * Метрики Prometheus для nginx из stub_status.
+ *
+ * Обработчик для js_content: делает внутренний subrequest к location
+ * со stub_status, разбирает ответ и отдаёт метрики текстом.
  */
 import prometheus from './prometheus.js';
 
-const metrics = prometheus.new();
+// Location со stub_status. Объявляется с internal: subrequest из njs
+// является внутренним запросом, снаружи location недоступен
+const STUB_STATUS_URI = '/stub_status';
 
-// Метрики из stub_status
-const nginx_connections_active = metrics.gauge({
-  key: 'nginx_connections_active',
-  help: 'Active client connections'
-});
+// Текущие значения
+const nginx_connections_active = prometheus.gauge(
+  'nginx_connections_active',
+  'Active client connections'
+);
 
-const nginx_connections_reading = metrics.gauge({
-  key: 'nginx_connections_reading',
-  help: 'Connections where nginx is reading the request header'
-});
+const nginx_connections_reading = prometheus.gauge(
+  'nginx_connections_reading',
+  'Connections where nginx is reading the request header'
+);
 
-const nginx_connections_writing = metrics.gauge({
-  key: 'nginx_connections_writing',
-  help: 'Connections where nginx is writing the response back to the client'
-});
+const nginx_connections_writing = prometheus.gauge(
+  'nginx_connections_writing',
+  'Connections where nginx is writing the response back to the client'
+);
 
-const nginx_connections_waiting = metrics.gauge({
-  key: 'nginx_connections_waiting',
-  help: 'Idle client connections waiting for a request'
-});
+const nginx_connections_waiting = prometheus.gauge(
+  'nginx_connections_waiting',
+  'Idle client connections waiting for a request'
+);
 
-const nginx_connections_accepted_total = metrics.counter({
-  key: 'nginx_connections_accepted_total',
-  help: 'Total number of accepted client connections'
-});
+// Накопительные счётчики с момента запуска nginx
+const nginx_connections_accepted_total = prometheus.counter(
+  'nginx_connections_accepted_total',
+  'Total number of accepted client connections'
+);
 
-const nginx_connections_handled_total = metrics.counter({
-  key: 'nginx_connections_handled_total',
-  help: 'Total number of handled connections'
-});
+const nginx_connections_handled_total = prometheus.counter(
+  'nginx_connections_handled_total',
+  'Total number of handled connections'
+);
 
-const nginx_requests_total = metrics.counter({
-  key: 'nginx_requests_total',
-  help: 'Total number of client requests'
-});
+const nginx_requests_total = prometheus.counter(
+  'nginx_requests_total',
+  'Total number of client requests'
+);
 
-// Функция парсинга stub_status
+// accepted всегда >= handled; разница - соединения, которые nginx принял,
+// но не смог обработать (исчерпан worker_connections и т.п.)
+const nginx_connections_dropped_total = prometheus.counter(
+  'nginx_connections_dropped_total',
+  'Total number of dropped connections (accepted - handled)'
+);
+
+// Разбор текста stub_status:
+//   Active connections: 291
+//   server accepts handled requests
+//    16630948 16630948 31070465
+//   Reading: 6 Writing: 179 Waiting: 106
 function parseStubStatus(text) {
   if (!text || typeof text !== 'string') {
     throw new Error('Invalid stub_status response: empty or not a string');
@@ -54,14 +71,13 @@ function parseStubStatus(text) {
       lines.push(allLines[i]);
     }
   }
-  
+
   if (lines.length < 4) {
     throw new Error('Invalid stub_status response: insufficient lines');
   }
 
   const result = {};
 
-  // Active connections: 1
   const activeMatch = lines[0].match(/Active connections:\s+(\d+)/);
   if (activeMatch) {
     result.active = parseInt(activeMatch[1], 10);
@@ -69,8 +85,6 @@ function parseStubStatus(text) {
     throw new Error('Failed to parse active connections');
   }
 
-  // server accepts handled requests
-  //  16630948 16630948 31070465
   let countersMatch = null;
   for (let j = 0; j < lines.length; j++) {
     countersMatch = lines[j].match(/\s*(\d+)\s+(\d+)\s+(\d+)/);
@@ -78,7 +92,7 @@ function parseStubStatus(text) {
       break;
     }
   }
-  
+
   if (countersMatch) {
     result.accepted = parseInt(countersMatch[1], 10);
     result.handled = parseInt(countersMatch[2], 10);
@@ -87,7 +101,6 @@ function parseStubStatus(text) {
     throw new Error('Failed to parse connection counters');
   }
 
-  // Reading: 0 Writing: 1 Waiting: 0
   const statusMatch = text.match(/Reading:\s+(\d+)\s+Writing:\s+(\d+)\s+Waiting:\s+(\d+)/);
   if (statusMatch) {
     result.reading = parseInt(statusMatch[1], 10);
@@ -101,57 +114,27 @@ function parseStubStatus(text) {
 }
 
 async function collect(r) {
-  const hostname = r.variables.hostname || r.variables.host || 'unknown';
-
   try {
-    // Внутренний subrequest к stub_status
-    const res = await r.subrequest('/v1/stub_status');
-    
+    const res = await r.subrequest(STUB_STATUS_URI);
+
     if (res.status !== 200) {
       r.error('Failed to fetch stub_status: ' + res.status);
       r.return(500, 'Internal Server Error\n');
       return;
     }
 
-    if (!res.responseText) {
-      r.error('Empty response from stub_status');
-      r.return(500, 'Internal Server Error\n');
-      return;
-    }
-
     const stats = parseStubStatus(res.responseText);
 
-    // Метрики соединений (gauge)
-    nginx_connections_active
-      .set(stats.active || 0)
-      .setMetaData({ instance: hostname });
+    nginx_connections_active.set(stats.active);
+    nginx_connections_reading.set(stats.reading);
+    nginx_connections_writing.set(stats.writing);
+    nginx_connections_waiting.set(stats.waiting);
 
-    nginx_connections_reading
-      .set(stats.reading || 0)
-      .setMetaData({ instance: hostname });
+    nginx_connections_accepted_total.set(stats.accepted);
+    nginx_connections_handled_total.set(stats.handled);
+    nginx_requests_total.set(stats.requests);
+    nginx_connections_dropped_total.set(Math.max(0, stats.accepted - stats.handled));
 
-    nginx_connections_writing
-      .set(stats.writing || 0)
-      .setMetaData({ instance: hostname });
-
-    nginx_connections_waiting
-      .set(stats.waiting || 0)
-      .setMetaData({ instance: hostname });
-
-    // Счётчики
-    nginx_connections_accepted_total
-      .set(stats.accepted || 0)
-      .setMetaData({ instance: hostname });
-
-    nginx_connections_handled_total
-      .set(stats.handled || 0)
-      .setMetaData({ instance: hostname });
-
-    nginx_requests_total
-      .set(stats.requests || 0)
-      .setMetaData({ instance: hostname });
-
-    // Сборка метрик
     r.headersOut['Content-Type'] = 'text/plain; version=0.0.4; charset=utf-8';
     r.return(200, prometheus.compile(
       nginx_connections_active,
@@ -160,13 +143,13 @@ async function collect(r) {
       nginx_connections_waiting,
       nginx_connections_accepted_total,
       nginx_connections_handled_total,
-      nginx_requests_total
+      nginx_requests_total,
+      nginx_connections_dropped_total
     ));
-
   } catch (e) {
     r.error('Error in metrics handler: ' + e);
     r.return(500, 'Internal Server Error\n');
   }
-};
+}
 
 export default collect;

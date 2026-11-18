@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+#
+# Сборка образа и проверка на живом контейнере:
+#   /             отвечает 200
+#   /metrics      отдаёт все метрики
+#   /stub_status  снаружи недоступен (404)
+#
+# Порт можно переопределить: PORT=18001 bash bin/check
+#
+set -euo pipefail
+
+cd "$(dirname "$0")/.."
+
+IMAGE="nginx-prometheus-metrics"
+NAME="nginx-metrics-check"
+PORT="${PORT:-18000}"
+BASE="http://127.0.0.1:${PORT}"
+
+METRICS=(
+  nginx_connections_active
+  nginx_connections_reading
+  nginx_connections_writing
+  nginx_connections_waiting
+  nginx_connections_accepted_total
+  nginx_connections_handled_total
+  nginx_requests_total
+  nginx_connections_dropped_total
+)
+
+cleanup() {
+  docker rm -f "$NAME" >/dev/null 2>&1 || true
+}
+trap cleanup EXIT
+
+docker build -q -t "$IMAGE" . >/dev/null
+docker run -d --rm --name "$NAME" -p "127.0.0.1:${PORT}:80" "$IMAGE" >/dev/null
+
+curl -sf --retry 10 --retry-all-errors --retry-delay 1 "$BASE/" >/dev/null \
+  || { echo "FAIL: / не отвечает"; exit 1; }
+
+body=$(curl -sf "$BASE/metrics") \
+  || { echo "FAIL: /metrics не отвечает"; exit 1; }
+
+for m in "${METRICS[@]}"; do
+  grep -q "^${m} [0-9]" <<<"$body" \
+    || { echo "FAIL: в /metrics нет метрики $m"; exit 1; }
+done
+
+status=$(curl -s -o /dev/null -w '%{http_code}' "$BASE/stub_status")
+[[ "$status" == "404" ]] \
+  || { echo "FAIL: /stub_status снаружи отвечает $status, ожидался 404"; exit 1; }
+
+echo "OK: образ собран, ${#METRICS[@]} метрик на месте, stub_status снаружи закрыт"

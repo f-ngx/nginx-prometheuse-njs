@@ -1,1057 +1,915 @@
 {
   "annotations": {
     "list": [
-    {
-      "builtIn": 1,
-      "datasource": {
-        "type": "grafana",
-        "uid": "-- Grafana --"
-      },
-      "enable": true,
-      "hide": true,
-      "iconColor": "rgba(0, 211, 255, 1)",
-      "name": "Annotations & Alerts",
-      "type": "dashboard"
-    }
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
     ]
   },
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
-  "id": 0,
+  "id": null,
   "links": [],
   "panels": [
-  {
-    "datasource": {
-      "type": "prometheus"
-    },
-    "fieldConfig": {
-      "defaults": {
-        "color": {
-          "mode": "palette-classic"
-        },
-        "custom": {
-          "axisBorderShow": false,
-          "axisCenteredZero": false,
-          "axisColorMode": "text",
-          "axisLabel": "",
-          "axisPlacement": "auto",
-          "barAlignment": 0,
-          "barWidthFactor": 0.6,
-          "drawStyle": "line",
-          "fillOpacity": 10,
-          "gradientMode": "none",
-          "hideFrom": {
-            "legend": false,
-            "tooltip": false,
-            "viz": false
-          },
-          "insertNulls": false,
-          "lineInterpolation": "linear",
-          "lineStyle": {
-            "fill": "solid"
-          },
-          "lineWidth": 2,
-          "pointSize": 5,
-          "scaleDistribution": {
-            "type": "linear"
-          },
-          "showPoints": "never",
-          "showValues": false,
-          "spanNulls": false,
-          "stacking": {
-            "group": "A",
-            "mode": "none"
-          },
-          "thresholdsStyle": {
-            "mode": "off"
-          }
-        },
-        "mappings": [],
-        "thresholds": {
-          "mode": "absolute",
-          "steps": [
-          {
-            "color": "green",
-            "value": null
-          }
-          ]
-        },
-        "unit": "short"
-      },
-      "overrides": [
-      {
-        "matcher": {
-          "id": "byName",
-          "options": "Active"
-        },
-        "properties": [
-        {
-          "id": "color",
-          "value": {
-            "fixedColor": "blue",
-            "mode": "fixed"
-          }
-        },
-        {
-          "id": "custom.lineWidth",
-          "value": 3
-        }
-        ]
-      },
-      {
-        "matcher": {
-          "id": "byName",
-          "options": "Reading"
-        },
-        "properties": [
-        {
-          "id": "color",
-          "value": {
-            "fixedColor": "green",
-            "mode": "fixed"
-          }
-        }
-        ]
-      },
-      {
-        "matcher": {
-          "id": "byName",
-          "options": "Writing"
-        },
-        "properties": [
-        {
-          "id": "color",
-          "value": {
-            "fixedColor": "orange",
-            "mode": "fixed"
-          }
-        }
-        ]
-      },
-      {
-        "matcher": {
-          "id": "byName",
-          "options": "Waiting"
-        },
-        "properties": [
-        {
-          "id": "color",
-          "value": {
-            "fixedColor": "purple",
-            "mode": "fixed"
-          }
-        }
-        ]
-      }
-      ]
-    },
-    "gridPos": {
-      "h": 8,
-      "w": 12,
-      "x": 0,
-      "y": 0
-    },
-    "id": 2,
-    "options": {
-      "legend": {
-        "calcs": [
-        "last",
-        "max",
-        "mean"
-        ],
-        "displayMode": "table",
-        "placement": "right",
-        "showLegend": true,
-        "sortBy": "Name",
-        "sortDesc": false
-      },
-      "tooltip": {
-        "hideZeros": false,
-        "mode": "multi",
-        "sort": "desc"
-      }
-    },
-    "pluginVersion": "12.3.1",
-    "targets": [
-    {
-      "editorMode": "builder",
-      "expr": "nginx_connections_active",
-      "legendFormat": "Active",
-      "range": true,
-      "refId": "A"
-    },
     {
       "datasource": {
-        "type": "prometheus"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
-      "editorMode": "builder",
-      "expr": "nginx_connections_reading",
-      "hide": false,
-      "instant": false,
-      "legendFormat": "Reading",
-      "range": true,
-      "refId": "B"
-    },
-    {
-      "datasource": {
-        "type": "prometheus"
-      },
-      "editorMode": "builder",
-      "expr": "nginx_connections_writing",
-      "hide": false,
-      "instant": false,
-      "legendFormat": "Writing",
-      "range": true,
-      "refId": "C"
-    },
-    {
-      "datasource": {
-        "type": "prometheus"
-      },
-      "editorMode": "builder",
-      "expr": "nginx_connections_waiting",
-      "hide": false,
-      "instant": false,
-      "legendFormat": "Waiting",
-      "range": true,
-      "refId": "D"
-    }
-    ],
-    "title": "Connection States Over Time",
-    "type": "timeseries",
-    "description": "Shows all connection states: active (total), reading, writing, and waiting"
-  },
-  {
-    "datasource": {
-      "type": "prometheus"
-    },
-    "fieldConfig": {
-      "defaults": {
-        "color": {
-          "mode": "continuous-BlPu"
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
         },
-        "custom": {
-          "axisBorderShow": false,
-          "axisCenteredZero": false,
-          "axisColorMode": "text",
-          "axisLabel": "",
-          "axisPlacement": "auto",
-          "barAlignment": 0,
-          "barWidthFactor": 0.6,
-          "drawStyle": "line",
-          "fillOpacity": 10,
-          "gradientMode": "none",
-          "hideFrom": {
-            "legend": false,
-            "tooltip": false,
-            "viz": false
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Active"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 3
+              }
+            ]
           },
-          "insertNulls": false,
-          "lineInterpolation": "linear",
-          "lineWidth": 2,
-          "pointSize": 5,
-          "scaleDistribution": {
-            "type": "linear"
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Reading"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
           },
-          "showPoints": "never",
-          "showValues": false,
-          "spanNulls": false,
-          "stacking": {
-            "group": "A",
-            "mode": "none"
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Writing"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
           },
-          "thresholdsStyle": {
-            "mode": "off"
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Waiting"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "purple",
+                  "mode": "fixed"
+                }
+              }
+            ]
           }
-        },
-        "decimals": 2,
-        "mappings": [],
-        "thresholds": {
-          "mode": "absolute",
-          "steps": [
-          {
-            "color": "green",
-            "value": null
-          }
-          ]
-        },
-        "unit": "reqps"
-      },
-      "overrides": []
-    },
-    "gridPos": {
-      "h": 8,
-      "w": 12,
-      "x": 12,
-      "y": 0
-    },
-    "id": 3,
-    "options": {
-      "legend": {
-        "calcs": [
-        "last",
-        "max",
-        "mean"
-        ],
-        "displayMode": "table",
-        "placement": "right",
-        "showLegend": true
-      },
-      "tooltip": {
-        "hideZeros": false,
-        "mode": "multi",
-        "sort": "desc"
-      }
-    },
-    "pluginVersion": "12.3.1",
-    "targets": [
-    {
-      "editorMode": "builder",
-      "expr": "rate(nginx_requests_total[1m])",
-      "legendFormat": "Requests/sec",
-      "range": true,
-      "refId": "A"
-    }
-    ],
-    "title": "Request Rate",
-    "type": "timeseries",
-    "description": "Number of requests per second"
-  },
-  {
-    "datasource": {
-      "type": "prometheus"
-    },
-    "fieldConfig": {
-      "defaults": {
-        "color": {
-          "mode": "thresholds"
-        },
-        "mappings": [],
-        "thresholds": {
-          "mode": "absolute",
-          "steps": [
-          {
-            "color": "green",
-            "value": null
-          },
-          {
-            "color": "yellow",
-            "value": 100
-          },
-          {
-            "color": "red",
-            "value": 500
-          }
-          ]
-        },
-        "unit": "short"
-      },
-      "overrides": []
-    },
-    "gridPos": {
-      "h": 4,
-      "w": 6,
-      "x": 0,
-      "y": 8
-    },
-    "id": 4,
-    "options": {
-      "colorMode": "value",
-      "graphMode": "area",
-      "justifyMode": "auto",
-      "orientation": "auto",
-      "reduceOptions": {
-        "calcs": [
-        "lastNotNull"
-        ],
-        "fields": "",
-        "values": false
-      },
-      "textMode": "auto"
-    },
-    "pluginVersion": "12.3.1",
-    "targets": [
-    {
-      "editorMode": "builder",
-      "expr": "nginx_connections_active",
-      "legendFormat": "Active",
-      "range": true,
-      "refId": "A"
-    }
-    ],
-    "title": "Active Connections",
-    "type": "stat",
-    "description": "Current active connections"
-  },
-  {
-    "datasource": {
-      "type": "prometheus"
-    },
-    "fieldConfig": {
-      "defaults": {
-        "color": {
-          "mode": "thresholds"
-        },
-        "mappings": [],
-        "thresholds": {
-          "mode": "absolute",
-          "steps": [
-          {
-            "color": "green",
-            "value": 0
-          },
-          {
-            "color": "yellow",
-            "value": 1
-          },
-          {
-            "color": "red",
-            "value": 10
-          }
-          ]
-        },
-        "unit": "short"
-      },
-      "overrides": []
-    },
-    "gridPos": {
-      "h": 4,
-      "w": 6,
-      "x": 6,
-      "y": 8
-    },
-    "id": 5,
-    "options": {
-      "colorMode": "value",
-      "graphMode": "area",
-      "justifyMode": "auto",
-      "orientation": "auto",
-      "reduceOptions": {
-        "calcs": [
-        "lastNotNull"
-        ],
-        "fields": "",
-        "values": false
-      },
-      "textMode": "auto"
-    },
-    "pluginVersion": "12.3.1",
-    "targets": [
-    {
-      "editorMode": "builder",
-      "expr": "nginx_connections_dropped_total",
-      "legendFormat": "Dropped",
-      "range": true,
-      "refId": "A"
-    }
-    ],
-    "title": "Dropped Connections",
-    "type": "stat",
-    "description": "Total dropped connections (accepted - handled)"
-  },
-  {
-    "datasource": {
-      "type": "prometheus"
-    },
-    "fieldConfig": {
-      "defaults": {
-        "color": {
-          "mode": "thresholds"
-        },
-        "mappings": [],
-        "thresholds": {
-          "mode": "absolute",
-          "steps": [
-          {
-            "color": "green",
-            "value": null
-          }
-          ]
-        },
-        "unit": "short"
-      },
-      "overrides": []
-    },
-    "gridPos": {
-      "h": 4,
-      "w": 6,
-      "x": 12,
-      "y": 8
-    },
-    "id": 6,
-    "options": {
-      "colorMode": "value",
-      "graphMode": "area",
-      "justifyMode": "auto",
-      "orientation": "auto",
-      "reduceOptions": {
-        "calcs": [
-        "lastNotNull"
-        ],
-        "fields": "",
-        "values": false
-      },
-      "textMode": "auto"
-    },
-    "pluginVersion": "12.3.1",
-    "targets": [
-    {
-      "editorMode": "builder",
-      "expr": "nginx_connections_accepted_total",
-      "legendFormat": "Accepted",
-      "range": true,
-      "refId": "A"
-    }
-    ],
-    "title": "Total Accepted Connections",
-    "type": "stat",
-    "description": "Total number of accepted connections"
-  },
-  {
-    "datasource": {
-      "type": "prometheus"
-    },
-    "fieldConfig": {
-      "defaults": {
-        "color": {
-          "mode": "thresholds"
-        },
-        "mappings": [],
-        "thresholds": {
-          "mode": "absolute",
-          "steps": [
-          {
-            "color": "green",
-            "value": null
-          }
-          ]
-        },
-        "unit": "short"
-      },
-      "overrides": []
-    },
-    "gridPos": {
-      "h": 4,
-      "w": 6,
-      "x": 18,
-      "y": 8
-    },
-    "id": 7,
-    "options": {
-      "colorMode": "value",
-      "graphMode": "area",
-      "justifyMode": "auto",
-      "orientation": "auto",
-      "reduceOptions": {
-        "calcs": [
-        "lastNotNull"
-        ],
-        "fields": "",
-        "values": false
-      },
-      "textMode": "auto"
-    },
-    "pluginVersion": "12.3.1",
-    "targets": [
-    {
-      "editorMode": "builder",
-      "expr": "nginx_requests_total",
-      "legendFormat": "Total Requests",
-      "range": true,
-      "refId": "A"
-    }
-    ],
-    "title": "Total Requests",
-    "type": "stat",
-    "description": "Total number of client requests"
-  },
-  {
-    "datasource": {
-      "type": "prometheus"
-    },
-    "fieldConfig": {
-      "defaults": {
-        "color": {
-          "mode": "palette-classic"
-        },
-        "custom": {
-          "axisBorderShow": false,
-          "axisCenteredZero": false,
-          "axisColorMode": "text",
-          "axisLabel": "",
-          "axisPlacement": "auto",
-          "barAlignment": 0,
-          "barWidthFactor": 0.6,
-          "drawStyle": "line",
-          "fillOpacity": 10,
-          "gradientMode": "none",
-          "hideFrom": {
-            "legend": false,
-            "tooltip": false,
-            "viz": false
-          },
-          "insertNulls": false,
-          "lineInterpolation": "linear",
-          "lineWidth": 2,
-          "pointSize": 5,
-          "scaleDistribution": {
-            "type": "linear"
-          },
-          "showPoints": "never",
-          "showValues": false,
-          "spanNulls": false,
-          "stacking": {
-            "group": "A",
-            "mode": "none"
-          },
-          "thresholdsStyle": {
-            "mode": "off"
-          }
-        },
-        "decimals": 2,
-        "mappings": [],
-        "thresholds": {
-          "mode": "absolute",
-          "steps": [
-          {
-            "color": "green",
-            "value": null
-          }
-          ]
-        },
-        "unit": "connps"
-      },
-      "overrides": [
-      {
-        "matcher": {
-          "id": "byName",
-          "options": "Accepted/sec"
-        },
-        "properties": [
-        {
-          "id": "color",
-          "value": {
-            "fixedColor": "blue",
-            "mode": "fixed"
-          }
-        }
         ]
       },
-      {
-        "matcher": {
-          "id": "byName",
-          "options": "Handled/sec"
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "legend": {
+          "calcs": [
+            "last",
+            "max",
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Name",
+          "sortDesc": false
         },
-        "properties": [
-        {
-          "id": "color",
-          "value": {
-            "fixedColor": "green",
-            "mode": "fixed"
-          }
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
         }
-        ]
       },
-      {
-        "matcher": {
-          "id": "byName",
-          "options": "Dropped/sec"
-        },
-        "properties": [
+      "pluginVersion": "12.3.1",
+      "targets": [
         {
-          "id": "color",
-          "value": {
-            "fixedColor": "red",
-            "mode": "fixed"
-          }
-        }
-        ]
-      }
-      ]
-    },
-    "gridPos": {
-      "h": 8,
-      "w": 12,
-      "x": 0,
-      "y": 12
-    },
-    "id": 8,
-    "options": {
-      "legend": {
-        "calcs": [
-        "last",
-        "max",
-        "mean"
-        ],
-        "displayMode": "table",
-        "placement": "right",
-        "showLegend": true
-      },
-      "tooltip": {
-        "hideZeros": false,
-        "mode": "multi",
-        "sort": "desc"
-      }
-    },
-    "pluginVersion": "12.3.1",
-    "targets": [
-    {
-      "editorMode": "builder",
-      "expr": "rate(nginx_connections_accepted_total[1m])",
-      "legendFormat": "Accepted/sec",
-      "range": true,
-      "refId": "A"
-    },
-    {
-      "datasource": {
-        "type": "prometheus"
-      },
-      "editorMode": "builder",
-      "expr": "rate(nginx_connections_handled_total[1m])",
-      "hide": false,
-      "instant": false,
-      "legendFormat": "Handled/sec",
-      "range": true,
-      "refId": "B"
-    },
-    {
-      "datasource": {
-        "type": "prometheus"
-      },
-      "editorMode": "builder",
-      "expr": "rate(nginx_connections_dropped_total[1m])",
-      "hide": false,
-      "instant": false,
-      "legendFormat": "Dropped/sec",
-      "range": true,
-      "refId": "C"
-    }
-    ],
-    "title": "Connection Rates",
-    "type": "timeseries",
-    "description": "Rate of accepted, handled, and dropped connections per second"
-  },
-  {
-    "datasource": {
-      "type": "prometheus"
-    },
-    "fieldConfig": {
-      "defaults": {
-        "color": {
-          "mode": "palette-classic"
-        },
-        "custom": {
-          "axisBorderShow": false,
-          "axisCenteredZero": false,
-          "axisColorMode": "text",
-          "axisLabel": "",
-          "axisPlacement": "auto",
-          "barAlignment": 0,
-          "barWidthFactor": 0.6,
-          "drawStyle": "line",
-          "fillOpacity": 10,
-          "gradientMode": "none",
-          "hideFrom": {
-            "legend": false,
-            "tooltip": false,
-            "viz": false
-          },
-          "insertNulls": false,
-          "lineInterpolation": "linear",
-          "lineWidth": 2,
-          "pointSize": 5,
-          "scaleDistribution": {
-            "type": "linear"
-          },
-          "showPoints": "never",
-          "showValues": false,
-          "spanNulls": false,
-          "stacking": {
-            "group": "A",
-            "mode": "none"
-          },
-          "thresholdsStyle": {
-            "mode": "off"
+          "editorMode": "builder",
+          "expr": "nginx_connections_active{job=~\"$job\"}",
+          "legendFormat": "{{job}} Active",
+          "range": true,
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
           }
         },
-        "mappings": [],
-        "thresholds": {
-          "mode": "absolute",
-          "steps": [
-          {
-            "color": "green",
-            "value": null
-          }
-          ]
-        },
-        "unit": "short"
-      },
-      "overrides": [
-      {
-        "matcher": {
-          "id": "byName",
-          "options": "Accepted"
-        },
-        "properties": [
         {
-          "id": "color",
-          "value": {
-            "fixedColor": "blue",
-            "mode": "fixed"
-          }
-        }
-        ]
-      },
-      {
-        "matcher": {
-          "id": "byName",
-          "options": "Handled"
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "builder",
+          "expr": "nginx_connections_reading{job=~\"$job\"}",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "{{job}} Reading",
+          "range": true,
+          "refId": "B"
         },
-        "properties": [
         {
-          "id": "color",
-          "value": {
-            "fixedColor": "green",
-            "mode": "fixed"
-          }
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "builder",
+          "expr": "nginx_connections_writing{job=~\"$job\"}",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "{{job}} Writing",
+          "range": true,
+          "refId": "C"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "builder",
+          "expr": "nginx_connections_waiting{job=~\"$job\"}",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "{{job}} Waiting",
+          "range": true,
+          "refId": "D"
         }
-        ]
-      }
-      ]
-    },
-    "gridPos": {
-      "h": 8,
-      "w": 12,
-      "x": 12,
-      "y": 12
-    },
-    "id": 9,
-    "options": {
-      "legend": {
-        "calcs": [
-        "last",
-        "max"
-        ],
-        "displayMode": "table",
-        "placement": "right",
-        "showLegend": true
-      },
-      "tooltip": {
-        "hideZeros": false,
-        "mode": "multi",
-        "sort": "desc"
-      }
-    },
-    "pluginVersion": "12.3.1",
-    "targets": [
-    {
-      "editorMode": "builder",
-      "expr": "nginx_connections_accepted_total",
-      "legendFormat": "Accepted",
-      "range": true,
-      "refId": "A"
-    },
-    {
-      "datasource": {
-        "type": "prometheus"
-      },
-      "editorMode": "builder",
-      "expr": "nginx_connections_handled_total",
-      "hide": false,
-      "instant": false,
-      "legendFormat": "Handled",
-      "range": true,
-      "refId": "B"
-    }
-    ],
-    "title": "Total Connections (Accepted vs Handled)",
-    "type": "timeseries",
-    "description": "Comparison of total accepted and handled connections. They should be equal (difference = dropped)"
-  },
-  {
-    "datasource": {
-      "type": "prometheus"
-    },
-    "fieldConfig": {
-      "defaults": {
-        "color": {
-          "mode": "continuous-GrYlRd",
-          "seriesBy": "last"
-        },
-        "decimals": 0,
-        "fieldMinMax": false,
-        "mappings": [],
-        "max": 100,
-        "min": 0,
-        "thresholds": {
-          "mode": "absolute",
-          "steps": [
-          {
-            "color": "green",
-            "value": 0
-          },
-          {
-            "color": "yellow",
-            "value": 50
-          },
-          {
-            "color": "orange",
-            "value": 80
-          },
-          {
-            "color": "red",
-            "value": 95
-          }
-          ]
-        },
-        "unit": "short"
-      },
-      "overrides": []
-    },
-    "gridPos": {
-      "h": 8,
-      "w": 12,
-      "x": 0,
-      "y": 20
-    },
-    "id": 1,
-    "options": {
-      "minVizHeight": 75,
-      "minVizWidth": 75,
-      "orientation": "auto",
-      "reduceOptions": {
-        "calcs": [
-        "lastNotNull"
-        ],
-        "fields": "",
-        "values": false
-      },
-      "showThresholdLabels": false,
-      "showThresholdMarkers": true,
-      "sizing": "auto"
-    },
-    "pluginVersion": "12.3.1",
-    "targets": [
-    {
-      "datasource": {
-        "type": "prometheus"
-      },
-      "editorMode": "builder",
-      "expr": "nginx_connections_active",
-      "legendFormat": "Active connections",
-      "range": true,
-      "refId": "A"
-    }
-    ],
-    "title": "Active Connections Gauge",
-    "type": "gauge",
-    "description": "Visual gauge showing current active connections"
-  },
-  {
-    "datasource": {
-      "type": "prometheus"
-    },
-    "fieldConfig": {
-      "defaults": {
-        "color": {
-          "mode": "palette-classic"
-        },
-        "custom": {
-          "hideFrom": {
-            "tooltip": false,
-            "viz": false,
-            "legend": false
-          }
-        },
-        "mappings": [],
-        "thresholds": {
-          "mode": "absolute",
-          "steps": [
-          {
-            "color": "green",
-            "value": null
-          }
-          ]
-        },
-        "unit": "percent"
-      },
-      "overrides": []
-    },
-    "gridPos": {
-      "h": 8,
-      "w": 12,
-      "x": 12,
-      "y": 20
-    },
-    "id": 10,
-    "options": {
-      "displayLabels": [
-      "name",
-      "percent"
       ],
-      "legend": {
-        "displayMode": "table",
-        "placement": "right",
-        "showLegend": true,
-        "values": [
-        "value",
-        "percent"
+      "title": "Connection States Over Time",
+      "type": "timeseries",
+      "description": "Shows all connection states: active (total), reading, writing, and waiting"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-BlPu"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "reqps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 3,
+      "options": {
+        "legend": {
+          "calcs": [
+            "last",
+            "max",
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "editorMode": "builder",
+          "expr": "rate(nginx_requests_total{job=~\"$job\"}[$__rate_interval])",
+          "legendFormat": "{{job}} Requests/sec",
+          "range": true,
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          }
+        }
+      ],
+      "title": "Request Rate",
+      "type": "timeseries",
+      "description": "Number of requests per second"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 0,
+        "y": 8
+      },
+      "id": 4,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "editorMode": "builder",
+          "expr": "nginx_connections_active{job=~\"$job\"}",
+          "legendFormat": "{{job}} Active",
+          "range": true,
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          }
+        }
+      ],
+      "title": "Active Connections",
+      "type": "stat",
+      "description": "Current active connections"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 1
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 6,
+        "y": 8
+      },
+      "id": 5,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "editorMode": "builder",
+          "expr": "nginx_connections_dropped_total{job=~\"$job\"}",
+          "legendFormat": "{{job}} Dropped",
+          "range": true,
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          }
+        }
+      ],
+      "title": "Dropped Connections",
+      "type": "stat",
+      "description": "Total dropped connections (accepted - handled)"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 12,
+        "y": 8
+      },
+      "id": 6,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "editorMode": "builder",
+          "expr": "nginx_connections_accepted_total{job=~\"$job\"}",
+          "legendFormat": "{{job}} Accepted",
+          "range": true,
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          }
+        }
+      ],
+      "title": "Total Accepted Connections",
+      "type": "stat",
+      "description": "Total number of accepted connections"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 18,
+        "y": 8
+      },
+      "id": 7,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "editorMode": "builder",
+          "expr": "nginx_requests_total{job=~\"$job\"}",
+          "legendFormat": "{{job}} Total Requests",
+          "range": true,
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          }
+        }
+      ],
+      "title": "Total Requests",
+      "type": "stat",
+      "description": "Total number of client requests"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "decimals": 2,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "connps"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Accepted/sec"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Handled/sec"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "green",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Dropped/sec"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
         ]
       },
-      "pieType": "pie",
-      "tooltip": {
-        "mode": "single"
-      }
-    },
-    "pluginVersion": "12.3.1",
-    "targets": [
-    {
-      "editorMode": "builder",
-      "expr": "nginx_connections_reading",
-      "legendFormat": "Reading",
-      "range": true,
-      "refId": "A"
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 12
+      },
+      "id": 8,
+      "options": {
+        "legend": {
+          "calcs": [
+            "last",
+            "max",
+            "mean"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "editorMode": "builder",
+          "expr": "rate(nginx_connections_accepted_total{job=~\"$job\"}[$__rate_interval])",
+          "legendFormat": "{{job}} Accepted/sec",
+          "range": true,
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          }
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "builder",
+          "expr": "rate(nginx_connections_handled_total{job=~\"$job\"}[$__rate_interval])",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "{{job}} Handled/sec",
+          "range": true,
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "builder",
+          "expr": "rate(nginx_connections_dropped_total{job=~\"$job\"}[$__rate_interval])",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "{{job}} Dropped/sec",
+          "range": true,
+          "refId": "C"
+        }
+      ],
+      "title": "Connection Rates",
+      "type": "timeseries",
+      "description": "Rate of accepted, handled, and dropped connections per second"
     },
     {
       "datasource": {
-        "type": "prometheus"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
-      "editorMode": "builder",
-      "expr": "nginx_connections_writing",
-      "hide": false,
-      "instant": false,
-      "legendFormat": "Writing",
-      "range": true,
-      "refId": "B"
-    },
-    {
-      "datasource": {
-        "type": "prometheus"
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "hideFrom": {
+              "tooltip": false,
+              "viz": false,
+              "legend": false
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
       },
-      "editorMode": "builder",
-      "expr": "nginx_connections_waiting",
-      "hide": false,
-      "instant": false,
-      "legendFormat": "Waiting",
-      "range": true,
-      "refId": "C"
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 12
+      },
+      "id": 10,
+      "options": {
+        "displayLabels": [
+          "name",
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "value",
+            "percent"
+          ]
+        },
+        "pieType": "pie",
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "pluginVersion": "12.3.1",
+      "targets": [
+        {
+          "editorMode": "builder",
+          "expr": "nginx_connections_reading{job=~\"$job\"}",
+          "legendFormat": "{{job}} Reading",
+          "range": true,
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          }
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "builder",
+          "expr": "nginx_connections_writing{job=~\"$job\"}",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "{{job}} Writing",
+          "range": true,
+          "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "builder",
+          "expr": "nginx_connections_waiting{job=~\"$job\"}",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "{{job}} Waiting",
+          "range": true,
+          "refId": "C"
+        }
+      ],
+      "title": "Connection States Distribution",
+      "type": "piechart",
+      "description": "Distribution of connection states (reading, writing, waiting)"
     }
-    ],
-    "title": "Connection States Distribution",
-    "type": "piechart",
-    "description": "Distribution of connection states (reading, writing, waiting)"
-  }
   ],
   "preload": false,
   "refresh": "30s",
   "schemaVersion": 42,
   "tags": [
-  "nginx",
-  "monitoring"
+    "nginx",
+    "monitoring"
   ],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "type": "datasource",
+        "name": "datasource",
+        "label": "Datasource",
+        "query": "prometheus",
+        "current": {},
+        "options": [],
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false
+      },
+      {
+        "type": "query",
+        "name": "job",
+        "label": "Job",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "definition": "label_values(nginx_connections_active, job)",
+        "query": {
+          "query": "label_values(nginx_connections_active, job)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "current": {},
+        "options": [],
+        "hide": 0,
+        "includeAll": true,
+        "allValue": ".*",
+        "multi": true,
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "skipUrlSync": false
+      }
+    ]
   },
   "time": {
     "from": "now-15m",
@@ -1059,16 +917,16 @@
   },
   "timepicker": {
     "refresh_intervals": [
-    "5s",
-    "10s",
-    "30s",
-    "1m",
-    "5m",
-    "15m",
-    "30m",
-    "1h",
-    "2h",
-    "1d"
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
     ]
   },
   "timezone": "browser",
